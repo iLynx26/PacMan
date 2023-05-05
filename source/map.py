@@ -35,9 +35,6 @@ class Map:
         
         self.objects = objects
     
-    def render(self, screen):
-        screen.blit()
-    
     def draw(self, screen):
         for object in self.objects:
             object.draw(screen)

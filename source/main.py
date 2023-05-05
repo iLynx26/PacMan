@@ -1,4 +1,5 @@
 from map import Map
+from pacman import PacMan
 import pygame
 
 pygame.init()
@@ -39,20 +40,20 @@ map_list = [
     ]
 
 map = Map(map_list)
+pacman = PacMan(1, 1)
 
 while not exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit = True
-        if event.type == pygame.KEYDOWN:
-            pacman.move(event.key)
 	
     clock.tick(30)
 
-    pygame.display.flip()
-
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
-    map.draw(screen)
+    pacman.move()
 
-    pygame.display.update()
+    screen.fill((0,0,0))
+    map.draw(screen)    
+    pacman.draw(screen)
+    pygame.display.flip()
