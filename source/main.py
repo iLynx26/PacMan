@@ -44,11 +44,15 @@ while not exit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit = True
+        if event.type == pygame.KEYDOWN:
+            pacman.move(event.key)
 	
     clock.tick(30)
 
     pygame.display.flip()
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
+
+    map.draw(screen)
 
     pygame.display.update()

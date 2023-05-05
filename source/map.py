@@ -22,18 +22,22 @@ class Map:
         objects = []
 
         for row in map_def:
-            row_list = row.split("")
-            for symbol in row_list:
+            for symbol in row:
                 if symbol == "#":
-                    objects.append(Wall(x, y))
+                    objects.append(Wall(x, y, self.images["wall"]))
                 elif symbol == "0":
-                    objects.append(Berry(x, y, False))
+                    objects.append(Berry(x, y, False, self.images["berry"]))
                 elif symbol == "O":
-                    objects.append(Berry(x, y, True))
+                    objects.append(Berry(x, y, True, self.images["berry_2"]))
                 x += 1
+            x = 0
             y += 1
         
         self.objects = objects
     
     def render(self, screen):
         screen.blit()
+    
+    def draw(self, screen):
+        for object in self.objects:
+            object.draw(screen)
