@@ -14,12 +14,12 @@ class PacMan:
         screen.blit(self.image, (self.x * 20, self.y * 20))
     
     def move(self, map):
-        if pygame.key.get_pressed()[pygame.K_UP] and (not map.collide_wall(self.x, self.y-speed) and not map.collide_wall(self.x, self.y-2*speed)):
+        if pygame.key.get_pressed()[pygame.K_UP] and not map.collide_wall(self.x, self.y-speed):
             self.y -= speed
-        if pygame.key.get_pressed()[pygame.K_DOWN] and (not map.collide_wall(self.x, self.y+speed) and not map.collide_wall(self.x, self.y+2*speed)):
+        if pygame.key.get_pressed()[pygame.K_DOWN] and not map.collide_wall(self.x, self.y+speed):
             self.y += speed      
-        if pygame.key.get_pressed()[pygame.K_LEFT] and (not map.collide_wall(self.x-speed, self.y) and not map.collide_wall(self.x-2*speed, self.y)):
+        if pygame.key.get_pressed()[pygame.K_LEFT] and not map.collide_wall(self.x-speed, self.y):
             self.x -= speed
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            if (not map.collide_wall(self.x+speed, self.y) and not map.collide_wall(self.x+2*speed, self.y)):
-                self.x += speed   
+            if not map.collide_wall(self.x+speed, self.y):
+                self.x += speed

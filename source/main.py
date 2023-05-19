@@ -40,6 +40,7 @@ map_list = [
     ]
 
 map = Map(map_list)
+map.screen = screen
 pacman = PacMan(1, 2)
 
 while not exit:
@@ -51,9 +52,9 @@ while not exit:
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
+    screen.fill((0,0,0))
     pacman.move(map)
 
-    screen.fill((0,0,0))
     map.draw(screen)    
     pacman.draw(screen)
     pygame.display.flip()

@@ -42,11 +42,23 @@ class Map:
     def collide(self, x, y):
         for object in self.objects:
             if object.x == int(x) and object.y == int(y):
+                pygame.draw.circle(self.screen, (255, 255, 255), (600, 100), 5)
                 return object
         return None
     
     def collide_wall(self, x, y):
+        object = self.collide(x+1, y)
+        if type(object) == Wall:
+            return True
+        object = self.collide(x, y+1)
+        if type(object) == Wall:
+            return True
         object = self.collide(x, y)
+        if type(object) == Wall:
+            return True
+        object = self.collide(x+1, y+1)
+        if type(object) == Wall:
+            return True
         if object is None:
             return False
         elif type(object) == Wall:
