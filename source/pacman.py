@@ -1,4 +1,7 @@
 import pygame
+from map import Map
+import math as m
+speed = 1/15
 
 class PacMan:
     def __init__(self, x, y):
@@ -10,13 +13,13 @@ class PacMan:
     def draw(self, screen):
         screen.blit(self.image, (self.x * 20, self.y * 20))
     
-    def move(self):
-        if pygame.key.get_pressed()[pygame.K_UP]:
-            self.y -= 0.125
-        if pygame.key.get_pressed()[pygame.K_DOWN]:
-            self.y += 0.125      
-        if pygame.key.get_pressed()[pygame.K_LEFT]:
-            self.x -= 0.125
+    def move(self, map):
+        if pygame.key.get_pressed()[pygame.K_UP] and (not map.collide_wall(self.x, self.y-speed) and not map.collide_wall(self.x, self.y-2*speed)):
+            self.y -= speed
+        if pygame.key.get_pressed()[pygame.K_DOWN] and (not map.collide_wall(self.x, self.y+speed) and not map.collide_wall(self.x, self.y+2*speed)):
+            self.y += speed      
+        if pygame.key.get_pressed()[pygame.K_LEFT] and (not map.collide_wall(self.x-speed, self.y) and not map.collide_wall(self.x-2*speed, self.y)):
+            self.x -= speed
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
-            self.x += 0.125
-    
+            if (not map.collide_wall(self.x+speed, self.y) and not map.collide_wall(self.x+2*speed, self.y)):
+                self.x += speed   

@@ -38,3 +38,18 @@ class Map:
     def draw(self, screen):
         for object in self.objects:
             object.draw(screen)
+
+    def collide(self, x, y):
+        for object in self.objects:
+            if object.x == int(x) and object.y == int(y):
+                return object
+        return None
+    
+    def collide_wall(self, x, y):
+        object = self.collide(x, y)
+        if object is None:
+            return False
+        elif type(object) == Wall:
+            return True
+        else: 
+            return False

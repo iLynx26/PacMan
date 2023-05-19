@@ -40,7 +40,7 @@ map_list = [
     ]
 
 map = Map(map_list)
-pacman = PacMan(1, 1)
+pacman = PacMan(1, 2)
 
 while not exit:
     for event in pygame.event.get():
@@ -51,7 +51,7 @@ while not exit:
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
-    pacman.move()
+    pacman.move(map)
 
     screen.fill((0,0,0))
     map.draw(screen)    
