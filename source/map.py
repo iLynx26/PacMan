@@ -47,16 +47,16 @@ class Map:
         return None
     
     def collide_wall(self, x, y):
-        object = self.collide(x+1, y)
+        object = self.collide(x+0.99, y)
         if type(object) == Wall:
             return True
-        object = self.collide(x, y+1)
+        object = self.collide(x, y+0.99)
         if type(object) == Wall:
             return True
         object = self.collide(x, y)
         if type(object) == Wall:
             return True
-        object = self.collide(x+1, y+1)
+        object = self.collide(x+0.99, y+0.99)
         if type(object) == Wall:
             return True
         if object is None:
