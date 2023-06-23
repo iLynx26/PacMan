@@ -46,17 +46,35 @@ class Map:
                 return object
         return None
     
-    def collide_wall(self, x, y):
-        object = self.collide(x+0.99, y)
+    def collide_wall(self, x, y, dir):
+        top_left = [0.1, 0.1]
+        top_right = [0.9, 0.1]
+        bottom_left = [0.1, 0.9]
+        bottom_right = [0.9, 0.9]
+
+        if dir == "up":
+            top_left[1] = 0
+            top_right[1] = 0
+        if dir == "down":
+            bottom_left[1] = 0.99
+            bottom_right[1] = 0.99
+        if dir == "left":
+            top_left[0] = 0
+            bottom_left[0] = 0
+        if dir == "right":
+            top_right[0] = 0.99
+            bottom_right[0] = 0.99
+
+        object = self.collide(x + top_left[0], y + top_left[1],)
         if type(object) == Wall:
             return True
-        object = self.collide(x, y+0.99)
+        object = self.collide(x + top_right[0], y + top_right[1])
         if type(object) == Wall:
             return True
-        object = self.collide(x, y)
+        object = self.collide(x + bottom_left[0], y + bottom_left[1])
         if type(object) == Wall:
             return True
-        object = self.collide(x+0.99, y+0.99)
+        object = self.collide(x + bottom_right[0], y + bottom_right[1])
         if type(object) == Wall:
             return True
         if object is None:

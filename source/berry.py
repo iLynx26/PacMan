@@ -6,9 +6,19 @@ class Berry:
         self.y = y
         self.isbig = isbig
         self.image = image
+        self.eaten = False
     def eat(self):
-        return(self.isbig)
-    
+        if self.eaten:
+            return(0)
+        
+        self.eaten = True
+
+        if self.isbig:
+            return(10)
+        else:
+            return(1)
+            
     def draw(self, screen):
-        screen.blit(self.image, (self.x * 20, self.y * 20))
+        if not self.eaten:
+            screen.blit(self.image, (self.x * 20, self.y * 20))
         
