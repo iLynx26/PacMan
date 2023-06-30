@@ -1,5 +1,5 @@
 import pygame
-
+import globals
 class Berry:
     def __init__(self, x, y, isbig, image):
         self.x = x
@@ -20,5 +20,5 @@ class Berry:
             
     def draw(self, screen):
         if not self.eaten:
-            screen.blit(self.image, (self.x * 20, self.y * 20))
+            screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))
         

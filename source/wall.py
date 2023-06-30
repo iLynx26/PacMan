@@ -1,4 +1,5 @@
 import pygame
+import globals
 
 class Wall:
     def __init__(self, x, y, image):
@@ -7,4 +8,4 @@ class Wall:
         self.image = image
     
     def draw(self, screen):
-        screen.blit(self.image, (self.x * 20, self.y * 20))
+        screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))

@@ -1,4 +1,5 @@
 import pygame
+import globals
 from berry import Berry
 from wall import Wall
 
@@ -10,7 +11,7 @@ class Map:
                        }
         
         for key in self.images:
-            self.images[key] = pygame.transform.scale(self.images[key], (20, 20))
+            self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size))
             
 
         self.parse(map_def)

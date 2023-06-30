@@ -4,11 +4,9 @@ import pygame
 
 pygame.init()
 
-block_size = 20
-
 clock = pygame.time.Clock()
 
-(width, height) = (640, 480)
+(width, height) = (1280, 960)
 screen = pygame.display.set_mode((width, height))
 
 exit = False
