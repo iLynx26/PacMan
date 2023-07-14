@@ -1,6 +1,7 @@
 from map import Map
 from pacman import PacMan
 import pygame
+import scoreboard as sb
 
 pygame.init()
 
@@ -55,4 +56,7 @@ while not exit:
 
     map.draw(screen)    
     pacman.draw(screen)
+
+    sb.show_score(pacman.score, screen)
+
     pygame.display.flip()

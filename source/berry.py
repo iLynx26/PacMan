@@ -14,9 +14,9 @@ class Berry:
         self.eaten = True
 
         if self.isbig:
-            return(10)
+            return(1000)
         else:
-            return(1)
+            return(100)
             
     def draw(self, screen):
         if not self.eaten:
