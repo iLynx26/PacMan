@@ -2,6 +2,7 @@ from map import Map
 from pacman import PacMan
 import pygame
 import scoreboard as sb
+from ghost import Ghost
 
 pygame.init()
 
@@ -41,6 +42,7 @@ map_list = [
 map = Map(map_list)
 map.screen = screen
 pacman = PacMan(1, 2)
+ghost = Ghost(6, 7, 1/14)
 
 while not exit:
     for event in pygame.event.get():
@@ -54,8 +56,11 @@ while not exit:
     screen.fill((0,0,0))
     pacman.move(map)
 
+    ghost.update(map)
+
     map.draw(screen)    
     pacman.draw(screen)
+    ghost.draw(screen)
 
     sb.show_score(pacman.score, screen)
 

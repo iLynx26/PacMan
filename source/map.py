@@ -84,3 +84,16 @@ class Map:
             return True
         else: 
             return False
+        
+    def get_available_directions(self, x, y, speed):
+        directions = []
+        if not self.collide_wall(x, y-speed, "up"):
+            directions.append("up")
+        if not self.collide_wall(x, y+speed, "down"):
+            directions.append("down")     
+        if not self.collide_wall(x-speed, y, "left"):
+            directions.append("left")
+        if not self.collide_wall(x+speed, y, "right"):
+            directions.append("right")
+        
+        return directions
