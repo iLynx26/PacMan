@@ -65,6 +65,11 @@ class Map:
         if dir == "right":
             top_right[0] = 0.99
             bottom_right[0] = 0.99
+        if dir == "":
+            top_left = [0,0]
+            top_right = [0.99,0]
+            bottom_left = [0,0.99]
+            bottom_right = [0.99,0.99]
 
         object = self.collide(x + top_left[0], y + top_left[1],)
         if type(object) == Wall:
@@ -87,13 +92,13 @@ class Map:
         
     def get_available_directions(self, x, y, speed):
         directions = []
-        if not self.collide_wall(x, y-speed, "up"):
+        if not self.collide_wall(x, y-speed, ""):
             directions.append("up")
-        if not self.collide_wall(x, y+speed, "down"):
+        if not self.collide_wall(x, y+speed, ""):
             directions.append("down")     
-        if not self.collide_wall(x-speed, y, "left"):
+        if not self.collide_wall(x-speed, y, ""):
             directions.append("left")
-        if not self.collide_wall(x+speed, y, "right"):
+        if not self.collide_wall(x+speed, y, ""):
             directions.append("right")
         
         return directions

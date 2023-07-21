@@ -1,6 +1,8 @@
 import pygame
 import globals
 import random
+import math
+import dir
 
 class Ghost:
     def __init__(self, x, y, speed):
@@ -11,6 +13,8 @@ class Ghost:
         self.y = y
         self.speed = speed
         self.directions = []
+        self.last_intersection = ()
+        self.dir = None
 
     def draw(self, screen):
         screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))
@@ -19,7 +23,9 @@ class Ghost:
         directions = map.get_available_directions(self.x, self.y, self.speed)
         if self.directions != directions:
             self.directions = directions
-            self.dir = directions[random.randint(0, len(directions) - 1)]
+            if self.get_map_coords() != self.last_intersection:
+                self.set_random_direction()
+                self.last_intersection = self.get_map_coords()
         if self.dir == 'up':
             self.y -= self.speed
         elif self.dir == 'down':
@@ -28,3 +34,13 @@ class Ghost:
             self.x -= self.speed
         elif self.dir == 'right':
             self.x += self.speed
+    
+    def set_random_direction(self):
+        directions = self.directions.copy()
+        if self.dir != None: 
+            directions.remove(dir.get_opposite_direction(self.dir))
+        self.dir = directions[random.randint(0, len(directions))]
+    def get_map_coords(self):
+        x_center = self.x+0.5
+        y_center = self.y+0.5
+        return [math.floor(x_center), math.floor(y_center)]
