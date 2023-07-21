@@ -9,10 +9,10 @@ class Map:
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "wall":pygame.image.load("images/wall_blue.png")
                        }
-        
+
         for key in self.images:
             self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size))
-            
+
 
         self.parse(map_def)
 
@@ -33,9 +33,9 @@ class Map:
                 x += 1
             x = 0
             y += 1
-        
+
         self.objects = objects
-    
+
     def draw(self, screen):
         for object in self.objects:
             object.draw(screen)
@@ -46,7 +46,7 @@ class Map:
                 pygame.draw.circle(self.screen, (255, 255, 255), (600, 100), 5)
                 return object
         return None
-    
+
     def collide_wall(self, x, y, dir):
         top_left = [0.1, 0.1]
         top_right = [0.9, 0.1]
@@ -66,9 +66,9 @@ class Map:
             top_right[0] = 0.99
             bottom_right[0] = 0.99
         if dir == "":
-            top_left = [0,0]
-            top_right = [0.99,0]
-            bottom_left = [0,0.99]
+            top_left = [0.01,0.01]
+            top_right = [0.99,0.01]
+            bottom_left = [0.01,0.99]
             bottom_right = [0.99,0.99]
 
         object = self.collide(x + top_left[0], y + top_left[1],)
@@ -87,18 +87,18 @@ class Map:
             return False
         elif type(object) == Wall:
             return True
-        else: 
+        else:
             return False
-        
+
     def get_available_directions(self, x, y, speed):
         directions = []
         if not self.collide_wall(x, y-speed, ""):
             directions.append("up")
         if not self.collide_wall(x, y+speed, ""):
-            directions.append("down")     
+            directions.append("down")
         if not self.collide_wall(x-speed, y, ""):
             directions.append("left")
         if not self.collide_wall(x+speed, y, ""):
             directions.append("right")
-        
+
         return directions
