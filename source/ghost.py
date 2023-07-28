@@ -5,13 +5,14 @@ import math
 import dir
 
 class Ghost:
-    def __init__(self, x, y, speed):
+    def __init__(self, x, y, min_self.speed, max_speed):
         self.image = pygame.image.load('images/clyde.png')
         self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.speed = speed
+        self.min_speed = min_speed
+        self.max_speed = max_speed
         self.directions = []
         self.last_intersection = ()
         self.dir = None
@@ -20,26 +21,27 @@ class Ghost:
         screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))
     
     def update(self, map):
-        directions = map.get_available_directions(self.x, self.y, self.speed)
+        self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
+        directions = map.get_available_directions(self.x, self.y, speed)
         if self.directions != directions:
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
                 self.set_random_direction()
                 self.last_intersection = self.get_map_coords()
         if self.dir == 'up':
-            self.y -= self.speed
+            self.y -= speed
         elif self.dir == 'down':
-            self.y += self.speed
+            self.y += speed
         elif self.dir == 'left':
-            self.x -= self.speed
+            self.x -= speed
         elif self.dir == 'right':
-            self.x += self.speed
+            self.x += speed
     
     def set_random_direction(self):
         directions = self.directions.copy()
         if self.dir != None: 
             directions.remove(dir.get_opposite_direction(self.dir))
-        self.dir = directions[random.randint(0, len(directions))]
+        self.dir = directions[random.randint(0, len(directions)-1)]
     def get_map_coords(self):
         x_center = self.x+0.5
         y_center = self.y+0.5

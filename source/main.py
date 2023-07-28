@@ -42,7 +42,8 @@ map_list = [
 map = Map(map_list)
 map.screen = screen
 pacman = PacMan(1, 2)
-ghost = Ghost(6, 7, 1/14)
+ghost = Ghost(6, 7, 1/11, 1/10)
+#player speed is 1/15
 
 while not exit:
     for event in pygame.event.get():
