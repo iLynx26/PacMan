@@ -12,23 +12,27 @@ class Map:
 
         for key in self.images:
             self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size))
-
+        self.berry_count = 0
+        self.eaten_count = 0
 
         self.parse(map_def)
+
 
     def parse(self, map_def: list):
         x = 0
         y = 0
 
         objects = []
-
+       
         for row in map_def:
             for symbol in row:
                 if symbol == "#":
                     objects.append(Wall(x, y, self.images["wall"]))
                 elif symbol == "0":
+                    self.berry_count += 1
                     objects.append(Berry(x, y, False, self.images["berry"]))
                 elif symbol == "O":
+                    self.berry_count += 1
                     objects.append(Berry(x, y, True, self.images["berry_2"]))
                 x += 1
             x = 0
@@ -66,10 +70,10 @@ class Map:
             top_right[0] = 0.99
             bottom_right[0] = 0.99
         if dir == "":
-            top_left = [0.01,0.01]
-            top_right = [0.99,0.01]
-            bottom_left = [0.01,0.99]
-            bottom_right = [0.99,0.99]
+            top_left = [0.1,0.1]
+            top_right = [0.9,0.1]
+            bottom_left = [0.1,0.9]
+            bottom_right = [0.9,0.9]
 
         object = self.collide(x + top_left[0], y + top_left[1],)
         if type(object) == Wall:
@@ -102,3 +106,6 @@ class Map:
             directions.append("right")
 
         return directions
+    
+    def calculate_difficulty(self):
+        globals.difficulty = self.eaten_count / self.berry_count

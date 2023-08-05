@@ -5,7 +5,7 @@ import math
 import dir
 
 class Ghost:
-    def __init__(self, x, y, min_self.speed, max_speed):
+    def __init__(self, x, y, min_speed, max_speed):
         self.image = pygame.image.load('images/clyde.png')
         self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.rect = self.image.get_rect()
@@ -13,6 +13,7 @@ class Ghost:
         self.y = y
         self.min_speed = min_speed
         self.max_speed = max_speed
+        self.speed = min_speed
         self.directions = []
         self.last_intersection = ()
         self.dir = None
@@ -22,20 +23,20 @@ class Ghost:
     
     def update(self, map):
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
-        directions = map.get_available_directions(self.x, self.y, speed)
+        directions = map.get_available_directions(self.x, self.y, self.min_speed)
         if self.directions != directions:
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
                 self.set_random_direction()
                 self.last_intersection = self.get_map_coords()
         if self.dir == 'up':
-            self.y -= speed
+            self.y -= self.speed
         elif self.dir == 'down':
-            self.y += speed
+            self.y += self.speed
         elif self.dir == 'left':
-            self.x -= speed
+            self.x -= self.speed
         elif self.dir == 'right':
-            self.x += speed
+            self.x += self.speed
     
     def set_random_direction(self):
         directions = self.directions.copy()

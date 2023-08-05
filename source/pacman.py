@@ -42,7 +42,12 @@ class PacMan:
             self.x += speed
         object = map.collide(self.x + 0.5, self.y + 0.5)
         if type(object) == Berry:
-            self.score += object.eat()
+            score = object.eat()
+            if score > 0:
+                self.score += score
+                map.eaten_count += 1
+                
+
 
             # Where we left of and what we want to try: PacMan cell; pressing two keys at once goes into different location then it's original; right + down + heading right = down
     

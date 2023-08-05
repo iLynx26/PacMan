@@ -42,7 +42,7 @@ map_list = [
 map = Map(map_list)
 map.screen = screen
 pacman = PacMan(1, 2)
-ghost = Ghost(6, 7, 1/11, 1/10)
+ghost = Ghost(6, 7, 1/15, 1/11)
 #player speed is 1/15
 
 while not exit:
@@ -66,3 +66,5 @@ while not exit:
     sb.show_score(pacman.score, screen)
 
     pygame.display.flip()
+
+    map.calculate_difficulty()
