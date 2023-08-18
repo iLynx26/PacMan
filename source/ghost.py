@@ -22,9 +22,17 @@ class Ghost:
         screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))
     
     def update(self, map):
+        print("-- ghost update")
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         directions = map.get_available_directions(self.x, self.y, self.min_speed)
+        print(f"Current: {self.dir}; Available: {directions}; {self.directions}")
         if self.directions != directions:
+            if self.dir not in directions:
+                print("rounded!")
+                self.x = int(self.x)
+                self.y = int(self.y)
+                print(self.x, self.y)
+                directions = map.get_available_directions(self.x, self.y, self.min_speed)
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
                 self.set_random_direction()
@@ -41,7 +49,11 @@ class Ghost:
     def set_random_direction(self):
         directions = self.directions.copy()
         if self.dir != None: 
-            directions.remove(dir.get_opposite_direction(self.dir))
+            removable_direction = dir.get_opposite_direction(self.dir)
+            if removable_direction not in directions:
+                print(removable_direction)
+            else:
+                directions.remove(removable_direction)
         self.dir = directions[random.randint(0, len(directions)-1)]
     def get_map_coords(self):
         x_center = self.x+0.5

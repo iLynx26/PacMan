@@ -93,16 +93,42 @@ class Map:
             return True
         else:
             return False
+    
+    def collide_wall_ghost(self, x, y, dir):
+        top_left = [0.01, 0.01]
+        top_right = [0.99, 0.01]
+        bottom_left = [0.01, 0.99]
+        bottom_right = [0.99, 0.99]
+
+        object = self.collide(x + top_left[0], y + top_left[1],)
+        if type(object) == Wall:
+            return True
+        object = self.collide(x + top_right[0], y + top_right[1])
+        if type(object) == Wall:
+            return True
+        object = self.collide(x + bottom_left[0], y + bottom_left[1])
+        if type(object) == Wall:
+            return True
+        object = self.collide(x + bottom_right[0], y + bottom_right[1])
+        if type(object) == Wall:
+            return True
+        if object is None:
+            return False
+        elif type(object) == Wall:
+            return True
+        else:
+            return False
 
     def get_available_directions(self, x, y, speed):
+        print(f"--get_available_directions called {x}, {y}, {speed}")
         directions = []
-        if not self.collide_wall(x, y-speed, ""):
+        if not self.collide_wall_ghost(x, y-speed, ""):
             directions.append("up")
-        if not self.collide_wall(x, y+speed, ""):
+        if not self.collide_wall_ghost(x, y+speed, ""):
             directions.append("down")
-        if not self.collide_wall(x-speed, y, ""):
+        if not self.collide_wall_ghost(x-speed, y, ""):
             directions.append("left")
-        if not self.collide_wall(x+speed, y, ""):
+        if not self.collide_wall_ghost(x+speed, y, ""):
             directions.append("right")
 
         return directions
