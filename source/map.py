@@ -7,7 +7,8 @@ class Map:
     def __init__(self, map_def: list):
         self.images = {"berry":pygame.image.load("images/berry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
-                       "wall":pygame.image.load("images/wall_blue.png")
+                       "wall":pygame.image.load("images/wall_blue.png"),
+                       "grass":pygame.image.load("images/grass2.png")
                        }
 
         for key in self.images:
@@ -19,6 +20,7 @@ class Map:
 
 
     def parse(self, map_def: list):
+
         x = 0
         y = 0
 
@@ -35,14 +37,21 @@ class Map:
                     self.berry_count += 1
                     objects.append(Berry(x, y, True, self.images["berry_2"]))
                 x += 1
+            self.width = x
             x = 0
             y += 1
+
+        self.height = y
 
         self.objects = objects
 
     def draw(self, screen):
+        for x in range(self.width):
+            for y in range(self.height):
+                screen.blit(self.images["grass"], (x*globals.block_size, y*globals.block_size))            
         for object in self.objects:
             object.draw(screen)
+
 
     def collide(self, x, y):
         for object in self.objects:
@@ -135,3 +144,4 @@ class Map:
     
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
+        print(globals.difficulty)

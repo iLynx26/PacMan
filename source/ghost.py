@@ -6,9 +6,8 @@ import dir
 
 class Ghost:
     def __init__(self, x, y, min_speed, max_speed):
-        self.image = pygame.image.load('images/clyde.png')
-        self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
-        self.rect = self.image.get_rect()
+        image = pygame.image.load('images/cats.png')
+        # self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.x = x
         self.y = y
         self.min_speed = min_speed
@@ -17,22 +16,34 @@ class Ghost:
         self.directions = []
         self.last_intersection = ()
         self.dir = None
+        self.frame = 0
+        self.counter = 0
+        y=0
+
+        self.images = {}
+
+        for direction in ["right", "up", "down", "left"]:
+            self.images[direction] = []
+            for number in range(4, 7):
+                frame = image.subsurface((number * 32, y * 32, 32, 32))
+                self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size, globals.block_size)))
+            y += 1
 
     def draw(self, screen):
-        screen.blit(self.image, (self.x * globals.block_size, self.y * globals.block_size))
+        screen.blit(self.images[self.dir][self.frame], (self.x * globals.block_size, self.y * globals.block_size))
     
     def update(self, map):
         print("-- ghost update")
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
-        directions = map.get_available_directions(self.x, self.y, self.min_speed)
+        directions = map.get_available_directions(self.x, self.y, self.speed)
         print(f"Current: {self.dir}; Available: {directions}; {self.directions}")
         if self.directions != directions:
             if self.dir not in directions:
                 print("rounded!")
-                self.x = int(self.x)
-                self.y = int(self.y)
+                self.x = round(self.x)
+                self.y = round(self.y)
                 print(self.x, self.y)
-                directions = map.get_available_directions(self.x, self.y, self.min_speed)
+                directions = map.get_available_directions(self.x, self.y, self.speed)
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
                 self.set_random_direction()
@@ -45,6 +56,8 @@ class Ghost:
             self.x -= self.speed
         elif self.dir == 'right':
             self.x += self.speed
+
+        self.animate(self.dir)
     
     def set_random_direction(self):
         directions = self.directions.copy()
@@ -54,8 +67,20 @@ class Ghost:
                 print(removable_direction)
             else:
                 directions.remove(removable_direction)
-        self.dir = directions[random.randint(0, len(directions)-1)]
+        self.animate(directions[random.randint(0, len(directions)-1)])
     def get_map_coords(self):
         x_center = self.x+0.5
         y_center = self.y+0.5
         return [math.floor(x_center), math.floor(y_center)]
+    
+    def animate(self, dir):
+        if self.dir == dir:
+            self.counter += 1
+            if self.counter == 5:
+                self.counter = 0
+                self.frame += 1
+                if self.frame > 2:
+                    self.frame = 0
+        else:
+            self.dir = dir
+            self.frame = 0
