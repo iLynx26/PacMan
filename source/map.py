@@ -144,4 +144,8 @@ class Map:
     
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
-        print(globals.difficulty)
+        if globals.difficulty > 1:
+            globals.difficulty = 1 #to hadle cheating
+    
+    def eat_berries_cheat(self):
+        self.eaten_count += 20

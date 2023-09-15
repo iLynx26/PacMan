@@ -6,7 +6,7 @@ import dir
 
 class Ghost:
     def __init__(self, x, y, min_speed, max_speed):
-        image = pygame.image.load('images/cats2.0.png')
+        image = pygame.image.load('images/bear, grizzly.png')
         # self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.x = x
         self.y = y
@@ -18,14 +18,14 @@ class Ghost:
         self.dir = None
         self.frame = 0
         self.counter = 0
-        y = 4
+        y = 0
 
         self.images = {}
 
-        for direction in ["down", "left", "right", "up"]:
+        for direction in ["up",	"right", "left","down"]:
             self.images[direction] = []
-            for number in range(3, 6):
-                frame = image.subsurface((number * 32, y * 32, 32, 32))
+            for number in range(0, 4):
+                frame = image.subsurface((number * 64, y * 64, 64, 64))
                 self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size, globals.block_size)))
             y += 1
 

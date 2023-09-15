@@ -40,13 +40,16 @@ class PacMan:
         if pygame.key.get_pressed()[pygame.K_RIGHT] and not map.collide_wall(self.x+speed, self.y, "right"):
             self.animate("right")
             self.x += speed
+        if pygame.key.get_pressed()[pygame.K_F9]:
+            map.eat_berries_cheat()
         object = map.collide(self.x + 0.5, self.y + 0.5)
+
         if type(object) == Berry:
             score = object.eat()
             if score > 0:
                 self.score += score
                 map.eaten_count += 1
-                
+        
 
 
             # Where we left of and what we want to try: PacMan cell; pressing two keys at once goes into different location then it's original; right + down + heading right = down
