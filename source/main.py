@@ -2,7 +2,8 @@ from map import Map
 from pacman import PacMan
 import pygame
 import scoreboard as sb
-from ghost import Ghost
+from fox import Fox
+from arctic_fox import ArcticFox
 
 pygame.init()
 
@@ -42,7 +43,8 @@ map_list = [
 map = Map(map_list)
 map.screen = screen
 pacman = PacMan(1, 2)
-ghost = Ghost(6, 7, 1/15, 1/8)
+fox = Fox(6, 7, 1/15, 1/8)
+arctic_fox = ArcticFox(12, 7, 1/16, 1/9)
 #player speed is 1/15
 
 while not exit:
@@ -57,11 +59,13 @@ while not exit:
     screen.fill((0,0,0))
     pacman.move(map)
 
-    ghost.update(map)
+    fox.update(map)
+    arctic_fox.update(map)
 
     map.draw(screen)    
     pacman.draw(screen)
-    ghost.draw(screen)
+    fox.draw(screen)
+    arctic_fox.draw(screen)
 
     sb.show_score(pacman.score, screen)
 

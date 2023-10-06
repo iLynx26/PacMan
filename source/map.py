@@ -103,7 +103,7 @@ class Map:
         else:
             return False
     
-    def collide_wall_ghost(self, x, y, dir):
+    def collide_wall_fox(self, x, y, dir):
         top_left = [0.01, 0.01]
         top_right = [0.99, 0.01]
         bottom_left = [0.01, 0.99]
@@ -129,17 +129,45 @@ class Map:
             return False
 
     def get_available_directions(self, x, y, speed):
-        print(f"--get_available_directions called {x}, {y}, {speed}")
         directions = []
-        if not self.collide_wall_ghost(x, y-speed, ""):
+        if not self.collide_wall_fox(x, y-speed, ""):
             directions.append("up")
-        if not self.collide_wall_ghost(x, y+speed, ""):
+        if not self.collide_wall_fox(x, y+speed, ""):
             directions.append("down")
-        if not self.collide_wall_ghost(x-speed, y, ""):
+        if not self.collide_wall_fox(x-speed, y, ""):
             directions.append("left")
-        if not self.collide_wall_ghost(x+speed, y, ""):
+        if not self.collide_wall_fox(x+speed, y, ""):
             directions.append("right")
+        return directions
+    
+    def get_available_directions_arctic(self, x, y, speed, quadrant):
+        min_width = 0
+        min_height = 0
+        max_width = self.width
+        max_height = self.height
 
+        if quadrant == 0:
+            max_width = self.width/2
+            max_height = self.height/2
+        if quadrant == 1:
+            min_width = self.width/2
+            max_height = self.height/2
+        if quadrant == 2:
+            min_height = self.height/2
+            max_width = self.width/2
+        if quadrant == 3:
+            min_height = self.height/2
+            min_width = self.width/2
+
+        directions = []
+        if not self.collide_wall_fox(x, y-speed, "") and y-speed > min_height:
+            directions.append("up")
+        if not self.collide_wall_fox(x, y+speed, "") and y+speed < max_height:
+            directions.append("down")
+        if not self.collide_wall_fox(x-speed, y, "") and x-speed > min_width:
+            directions.append("left")
+        if not self.collide_wall_fox(x+speed, y, "") and x+speed < max_width:
+            directions.append("right")
         return directions
     
     def calculate_difficulty(self):

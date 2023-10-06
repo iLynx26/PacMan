@@ -4,9 +4,9 @@ import random
 import math
 import dir
 
-class Ghost:
+class Fox:
     def __init__(self, x, y, min_speed, max_speed):
-        image = pygame.image.load('images/bear, grizzly.png')
+        image = pygame.image.load('images/fox, woods.png')
         # self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.x = x
         self.y = y
@@ -22,27 +22,23 @@ class Ghost:
 
         self.images = {}
 
-        for direction in ["up",	"right", "left","down"]:
+        for direction in ["down",	"right", "left","up"]:
             self.images[direction] = []
             for number in range(0, 4):
                 frame = image.subsurface((number * 64, y * 64, 64, 64))
-                self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size, globals.block_size)))
+                self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size+14, globals.block_size+14)))
             y += 1
 
     def draw(self, screen):
-        screen.blit(self.images[self.dir][self.frame], (self.x * globals.block_size, self.y * globals.block_size))
+        screen.blit(self.images[self.dir][self.frame], (self.x * globals.block_size-7, self.y * globals.block_size-7))
     
     def update(self, map):
-        print("-- ghost update")
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         directions = map.get_available_directions(self.x, self.y, self.speed)
-        print(f"Current: {self.dir}; Available: {directions}; {self.directions}")
         if self.directions != directions:
             if self.dir not in directions:
-                print("rounded!")
                 self.x = round(self.x)
                 self.y = round(self.y)
-                print(self.x, self.y)
                 directions = map.get_available_directions(self.x, self.y, self.speed)
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
