@@ -140,36 +140,6 @@ class Map:
             directions.append("right")
         return directions
     
-    def get_available_directions_arctic(self, x, y, speed, quadrant):
-        min_width = 0
-        min_height = 0
-        max_width = self.width
-        max_height = self.height
-
-        if quadrant == 0:
-            max_width = self.width/2
-            max_height = self.height/2
-        if quadrant == 1:
-            min_width = self.width/2
-            max_height = self.height/2
-        if quadrant == 2:
-            min_height = self.height/2
-            max_width = self.width/2
-        if quadrant == 3:
-            min_height = self.height/2
-            min_width = self.width/2
-
-        directions = []
-        if not self.collide_wall_fox(x, y-speed, "") and y-speed > min_height:
-            directions.append("up")
-        if not self.collide_wall_fox(x, y+speed, "") and y+speed < max_height:
-            directions.append("down")
-        if not self.collide_wall_fox(x-speed, y, "") and x-speed > min_width:
-            directions.append("left")
-        if not self.collide_wall_fox(x+speed, y, "") and x+speed < max_width:
-            directions.append("right")
-        return directions
-    
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
         if globals.difficulty > 1:

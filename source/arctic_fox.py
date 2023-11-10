@@ -18,6 +18,7 @@ class ArcticFox:
         self.dir = None
         self.frame = 0
         self.counter = 0
+        self.quadrant = 1
         y = 0
 
         self.images = {}
@@ -34,16 +35,23 @@ class ArcticFox:
     
     def update(self, map):
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
-        directions = map.get_available_directions_arctic(self.x, self.y, self.speed, 1)
-        if self.directions != directions:
-            if len(directions):
-                self.x = round(self.x)
-                self.y = round(self.y)
-                directions = map.get_available_directions_arctic(self.x, self.y, self.speed, 1)
-            self.directions = directions
-            if self.get_map_coords() != self.last_intersection:
-                self.set_random_direction()
-                self.last_intersection = self.get_map_coords()
+        if self.will_leave_quadrant(map):
+            self.last_intersection = [-1, -1] #Make sure last intersection doesn't prevent us to changing directions
+            print(self.last_intersection)
+            self.dir = dir.get_opposite_direction(self.dir)
+        else:
+            directions = map.get_available_directions(self.x, self.y, self.speed)
+            if self.directions != directions:
+                if self.dir not in directions:
+                    self.x = round(self.x)
+                    self.y = round(self.y)
+                    directions = map.get_available_directions(self.x, self.y, self.speed)
+                self.directions = directions
+                if self.get_map_coords() != self.last_intersection:
+                    self.set_random_direction()
+                    self.last_intersection = self.get_map_coords()
+                    print(self.last_intersection)
+
         if self.dir == 'up':
             self.y -= self.speed
         elif self.dir == 'down':
@@ -64,9 +72,10 @@ class ArcticFox:
             else:
                 directions.remove(removable_direction)
         self.animate(directions[random.randint(0, len(directions)-1)])
+
     def get_map_coords(self):
-        x_center = self.x+0.5
-        y_center = self.y+0.5
+        x_center = self.x + 0.5
+        y_center = self.y + 0.5
         return [math.floor(x_center), math.floor(y_center)]
     
     def animate(self, dir):
@@ -80,3 +89,38 @@ class ArcticFox:
         else:
             self.dir = dir
             self.frame = 0
+
+    def will_leave_quadrant(self, map):
+        x = self.x
+        y = self.y
+
+        min_width = 0
+        min_height = 0
+        max_width = map.width
+        max_height = map.height
+
+        if self.quadrant == 0:
+            max_width = map.width/2
+            max_height = map.height/2
+        if self.quadrant == 1:
+            min_width = map.width/2
+            max_height = map.height/2
+        if self.quadrant == 2:
+            min_height = map.height/2
+            max_width = map.width/2
+        if self.quadrant == 3:
+            min_height = map.height/2
+            min_width = map.width/2
+
+        if self.dir == 'up':
+            y -= self.speed
+        elif self.dir == 'down':
+            y += self.speed
+        elif self.dir == 'left':
+            x -= self.speed
+        elif self.dir == 'right':
+            x += self.speed
+        
+        if (x > min_width and y > min_height) and (x < max_width and y < max_height):
+            return False
+        return True

@@ -4,9 +4,9 @@ import random
 import math
 import dir
 
-class Fox:
+class Chicken:
     def __init__(self, x, y, min_speed, max_speed):
-        image = pygame.image.load('images/fox, woods.png')
+        image = pygame.image.load('images/chicken.png')
         # self.image = pygame.transform.scale(self.image, (globals.block_size, globals.block_size))
         self.x = x
         self.y = y
@@ -22,10 +22,10 @@ class Fox:
 
         self.images = {}
 
-        for direction in ["down",	"right", "left","up"]:
+        for direction in ["up", "right", "down", "left"]:
             self.images[direction] = []
-            for number in range(0, 4):
-                frame = image.subsurface((number * 64, y * 64, 64, 64))
+            for number in range(0, 3):
+                frame = image.subsurface((number * 32, y * 32, 32, 32))
                 self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size+14, globals.block_size+14)))
             y += 1
 
