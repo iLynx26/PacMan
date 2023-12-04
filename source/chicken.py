@@ -42,7 +42,7 @@ class Chicken:
                 directions = map.get_available_directions(self.x, self.y, self.speed)
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
-                self.set_random_direction()
+                self.set_direction(map)
                 self.last_intersection = self.get_map_coords()
         if self.dir == 'up':
             self.y -= self.speed
@@ -55,16 +55,43 @@ class Chicken:
 
         self.animate(self.dir)
     
-    def set_random_direction(self):
+    def set_direction(self, map):
         directions = self.directions.copy()
         if self.dir != None: 
             removable_direction = dir.get_opposite_direction(self.dir)
-            if removable_direction not in directions:
-                print(removable_direction)
-            else:
+            if removable_direction in directions:
                 directions.remove(removable_direction)
+                print(f"Removing direction {removable_direction}, dir: {self.dir}!")
+
+        original_directions = directions.copy()
+
+        distance = ((self.x - map.pacman.x)**2 + (self.y - map.pacman.y)**2) **0.5
+
+        if distance > 3000:
+            dist = 10
+        else:
+            dist = 5
+
+        print(f"before {directions}")
+        print(f"before original {original_directions}")
+
+        if True: # random.randint(0, dist) > 0:
+            if self.y > map.pacman.y and "down" in directions:
+                directions.remove('down')
+            if self.y < map.pacman.y and "up" in directions:
+                directions.remove('up')
+            if self.x > map.pacman.x and "right" in directions:
+                directions.remove('right')
+            if self.x < map.pacman.x and "left" in directions:
+                directions.remove('left')
+            if len(directions) == 0:
+                print("Resetting directions")
+                directions = original_directions
+
         self.animate(directions[random.randint(0, len(directions)-1)])
         
+        print(f"after {directions}")
+
     def get_map_coords(self):
         x_center = self.x+0.5
         y_center = self.y+0.5

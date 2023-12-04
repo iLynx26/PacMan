@@ -37,7 +37,7 @@ class ArcticFox:
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         if self.will_leave_quadrant(map):
             self.last_intersection = [-1, -1] #Make sure last intersection doesn't prevent us to changing directions
-            print(self.last_intersection)
+            # print(self.last_intersection)
             self.dir = dir.get_opposite_direction(self.dir)
         else:
             directions = map.get_available_directions(self.x, self.y, self.speed)
@@ -50,7 +50,7 @@ class ArcticFox:
                 if self.get_map_coords() != self.last_intersection:
                     self.set_random_direction()
                     self.last_intersection = self.get_map_coords()
-                    print(self.last_intersection)
+                    # print(self.last_intersection)
 
         if self.dir == 'up':
             self.y -= self.speed
@@ -68,7 +68,7 @@ class ArcticFox:
         if self.dir != None: 
             removable_direction = dir.get_opposite_direction(self.dir)
             if removable_direction not in directions:
-                print(removable_direction)
+                pass
             else:
                 directions.remove(removable_direction)
         self.animate(directions[random.randint(0, len(directions)-1)])

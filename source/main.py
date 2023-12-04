@@ -41,9 +41,9 @@ map_list = [
     "###################"
     ]
 
-map = Map(map_list)
-map.screen = screen
 pacman = PacMan(1, 2)
+map = Map(pacman, map_list)
+map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
 arctic_fox = ArcticFox(12, 7, 1/16, 1/9)
 chicken = Chicken(1, 21, 1/17, 1/10)

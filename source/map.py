@@ -4,7 +4,7 @@ from berry import Berry
 from wall import Wall
 
 class Map:
-    def __init__(self, map_def: list):
+    def __init__(self, pacman, map_def: list):
         self.images = {"berry":pygame.image.load("images/berry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "wall":pygame.image.load("images/wall_blue.png"),
@@ -15,6 +15,7 @@ class Map:
             self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size))
         self.berry_count = 0
         self.eaten_count = 0
+        self.pacman = pacman
 
         self.parse(map_def)
 
@@ -143,7 +144,7 @@ class Map:
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
         if globals.difficulty > 1:
-            globals.difficulty = 1 #to hadle cheating
+            globals.difficulty = 1 #to hadle ing
     
     def eat_berries_cheat(self):
         self.eaten_count += 20

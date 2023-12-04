@@ -60,7 +60,7 @@ class Fox:
         if self.dir != None: 
             removable_direction = dir.get_opposite_direction(self.dir)
             if removable_direction not in directions:
-                print(removable_direction)
+                pass
             else:
                 directions.remove(removable_direction)
         self.animate(directions[random.randint(0, len(directions)-1)])
