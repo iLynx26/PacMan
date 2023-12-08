@@ -34,12 +34,12 @@ class Fox:
     
     def update(self, map):
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
-        directions = map.get_available_directions(self.x, self.y, self.speed)
+        directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
         if self.directions != directions:
             if self.dir not in directions:
                 self.x = round(self.x)
                 self.y = round(self.y)
-                directions = map.get_available_directions(self.x, self.y, self.speed)
+                directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
             self.directions = directions
             if self.get_map_coords() != self.last_intersection:
                 self.set_random_direction()

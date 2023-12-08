@@ -104,11 +104,11 @@ class Map:
         else:
             return False
     
-    def collide_wall_fox(self, x, y, dir):
-        top_left = [0.01, 0.01]
-        top_right = [0.99, 0.01]
-        bottom_left = [0.01, 0.99]
-        bottom_right = [0.99, 0.99]
+    def collide_wall_ghost(self, x, y, dir, slop):
+        top_left = [slop, slop]
+        top_right = [1-slop, slop]
+        bottom_left = [slop, 1-slop]
+        bottom_right = [1-slop, 1-slop]
 
         object = self.collide(x + top_left[0], y + top_left[1],)
         if type(object) == Wall:
@@ -129,22 +129,22 @@ class Map:
         else:
             return False
 
-    def get_available_directions(self, x, y, speed):
+    def get_available_directions(self, x, y, speed, slop):
         directions = []
-        if not self.collide_wall_fox(x, y-speed, ""):
+        if not self.collide_wall_ghost(x, y-speed, "", slop):
             directions.append("up")
-        if not self.collide_wall_fox(x, y+speed, ""):
+        if not self.collide_wall_ghost(x, y+speed, "", slop):
             directions.append("down")
-        if not self.collide_wall_fox(x-speed, y, ""):
+        if not self.collide_wall_ghost(x-speed, y, "", slop):
             directions.append("left")
-        if not self.collide_wall_fox(x+speed, y, ""):
+        if not self.collide_wall_ghost(x+speed, y, "", slop):
             directions.append("right")
         return directions
     
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
         if globals.difficulty > 1:
-            globals.difficulty = 1 #to hadle ing
+            globals.difficulty = 1 #to hadle cheating
     
     def eat_berries_cheat(self):
         self.eaten_count += 20
