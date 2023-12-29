@@ -19,6 +19,8 @@ class Chicken:
         self.frame = 0
         self.counter = 0
         y = 0
+        self.prev_x = -1
+        self.prev_y = -1
 
         self.images = {}
 
@@ -35,16 +37,20 @@ class Chicken:
     def update(self, map):
         print(self.x, self.y)
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
-        directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
-        if self.directions != directions:
-            if self.dir not in directions:
-                self.x = round(self.x)
-                self.y = round(self.y)
-                directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
-            self.directions = directions
-            if self.get_map_coords() != self.last_intersection:
-                self.set_direction(map)
-                self.last_intersection = self.get_map_coords()
+        if int(self.prev_x) != int(self.x) or int(self.prev_y) != int(self.y):
+            directions = map.get_available_directions(round(self.x), round(self.y), self.speed, 0.01)
+            if self.directions != directions:
+                if self.dir not in directions:
+                    print("self.dir not in directions")
+                    self.x = round(self.x)
+                    self.y = round(self.y)
+                    directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
+                self.directions = directions
+                if self.get_map_coords() != self.last_intersection:
+                    self.set_direction(map)
+                    self.last_intersection = self.get_map_coords()
+        self.prev_x = self.x
+        self.prev_y = self.y
         if self.dir == 'up':
             self.y -= self.speed
         elif self.dir == 'down':
@@ -57,8 +63,10 @@ class Chicken:
         self.animate(self.dir)
     
     def set_direction(self, map):
+        #Make a local copy of the directions we found in the update function
         directions = self.directions.copy()
         if self.dir != None: 
+            #Don't turn around
             removable_direction = dir.get_opposite_direction(self.dir)
             if removable_direction in directions:
                 directions.remove(removable_direction)
@@ -73,10 +81,8 @@ class Chicken:
         else:
             dist = 5
 
-        print(f"before {directions}")
-        print(f"before original {original_directions}")
-
-        if True: # random.randint(0, dist) > 0:
+        # 1 in dist chance that the chicken follows the pacman, if the pacman is below, up is removed, above the chicken - down is removed, etc.
+        if random.randint(0, dist) > 0: 
             if self.y > map.pacman.y and "down" in directions:
                 directions.remove('down')
             if self.y < map.pacman.y and "up" in directions:
@@ -85,13 +91,11 @@ class Chicken:
                 directions.remove('right')
             if self.x < map.pacman.x and "left" in directions:
                 directions.remove('left')
+            #If there are no options, then go to original(prevents crashes)
             if len(directions) == 0:
-                print("Resetting directions")
                 directions = original_directions
 
         self.animate(directions[random.randint(0, len(directions)-1)])
-        
-        print(f"after {directions}")
 
     def get_map_coords(self):
         x_center = self.x+0.5

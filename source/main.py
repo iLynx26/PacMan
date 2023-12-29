@@ -41,12 +41,12 @@ map_list = [
     "###################"
     ]
 
-pacman = PacMan(1, 2)
+pacman = PacMan(2, 1)
 map = Map(pacman, map_list)
 map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
-arctic_fox = ArcticFox(12, 7, 1/16, 1/9)
-chicken = Chicken(1, 21, 1/17, 1/10)
+arctic_fox = ArcticFox(12, 7, 1/16, 1/8)
+chicken = Chicken(2, 21, 1/17, 1/10)
 #player speed is 1/15
 
 while not exit:
