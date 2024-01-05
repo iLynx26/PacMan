@@ -35,13 +35,13 @@ class Chicken:
         screen.blit(self.images[self.dir][self.frame], (self.x * globals.block_size-7, self.y * globals.block_size-7))
     
     def update(self, map):
-        print(self.x, self.y)
+        # print(self.x, self.y)
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         if int(self.prev_x) != int(self.x) or int(self.prev_y) != int(self.y):
             directions = map.get_available_directions(round(self.x), round(self.y), self.speed, 0.01)
             if self.directions != directions:
                 if self.dir not in directions:
-                    print("self.dir not in directions")
+                    # print("self.dir not in directions")
                     self.x = round(self.x)
                     self.y = round(self.y)
                     directions = map.get_available_directions(self.x, self.y, self.speed, 0.01)
@@ -70,19 +70,21 @@ class Chicken:
             removable_direction = dir.get_opposite_direction(self.dir)
             if removable_direction in directions:
                 directions.remove(removable_direction)
-                print(f"Removing direction {removable_direction}, dir: {self.dir}!")
+                # print(f"Removing direction {removable_direction}, dir: {self.dir}!")
 
         original_directions = directions.copy()
 
         distance = ((self.x - map.pacman.x)**2 + (self.y - map.pacman.y)**2) **0.5
 
-        if distance > 3000:
-            dist = 10
-        else:
-            dist = 5
+        animal_aggression = distance/20 + globals.difficulty/2
+        #Clamping animal aggresion to the range from 0 to 1
+        animal_aggression = max(0, min(1, animal_aggression))
 
-        # 1 in dist chance that the chicken follows the pacman, if the pacman is below, up is removed, above the chicken - down is removed, etc.
-        if random.randint(0, dist) > 0: 
+        # 1 in dist chance that the chicken doesn't follow the pacman.
+        # If the pacman is below, up is removed, above the chicken - down is removed, etc.
+            
+        if random.random() < animal_aggression: 
+            # print(f"Decided to be aggressive {animal_aggression}")
             if self.y > map.pacman.y and "down" in directions:
                 directions.remove('down')
             if self.y < map.pacman.y and "up" in directions:

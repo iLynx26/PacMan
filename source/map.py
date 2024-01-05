@@ -141,6 +141,7 @@ class Map:
             directions.append("right")
         return directions
     
+    #difficulty is a number from 0 to 1 which decidec how quick and "smart" the ghosts are. 0 is easy, 1 is hard
     def calculate_difficulty(self):
         globals.difficulty = self.eaten_count / self.berry_count
         if globals.difficulty > 1:
