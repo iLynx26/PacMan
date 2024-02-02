@@ -2,17 +2,23 @@ import pygame
 import globals
 from berry import Berry
 from wall import Wall
+from tree import Tree
 
 class Map:
     def __init__(self, pacman, map_def: list):
         self.images = {"berry":pygame.image.load("images/berry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "wall":pygame.image.load("images/wall_blue.png"),
-                       "grass":pygame.image.load("images/grass2.png")
+                       "grass":pygame.image.load("images/grass2.png"),
+                       "tree":pygame.image.load("images/tree2.0.png")
                        }
 
+        
         for key in self.images:
-            self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size))
+            height_multiplier = 1
+            if key == "tree":
+                height_multiplier = 1.4
+            self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size * height_multiplier))
         self.berry_count = 0
         self.eaten_count = 0
         self.pacman = pacman
@@ -37,6 +43,8 @@ class Map:
                 elif symbol == "O":
                     self.berry_count += 1
                     objects.append(Berry(x, y, True, self.images["berry_2"]))
+                elif symbol == "T":
+                    objects.append(Tree(x, y, self.images["tree"]))
                 x += 1
             self.width = x
             x = 0

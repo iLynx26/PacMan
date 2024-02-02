@@ -5,6 +5,7 @@ import scoreboard as sb
 from fox import Fox
 from arctic_fox import ArcticFox
 from chicken import Chicken
+from owl import Owl
 
 pygame.init()
 
@@ -18,7 +19,7 @@ exit = False
 map_list = [
     "###################",
     "#0 0 0 0 0 0 0 0 0#",
-    "# ####0#####0#### #",
+    "# TTTT0#####0#### #",
     "#0 0 0 # O # 0 0 0#",
     "# ####0#0#0#0#### #",
     "#0#### # # # ####0#",
@@ -47,6 +48,7 @@ map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
 arctic_fox = ArcticFox(12, 7, 1/16, 1/8)
 chicken = Chicken(2, 21, 1/18, 1/11)
+owl = Owl(16, 21, 1/18, 1/11)
 #player speed is 1/15
 
 while not exit:
@@ -64,12 +66,14 @@ while not exit:
     fox.update(map)
     arctic_fox.update(map)
     chicken.update(map)
+    owl.update(map)
 
     map.draw(screen)    
     pacman.draw(screen)
     fox.draw(screen)
     arctic_fox.draw(screen)
     chicken.draw(screen)
+    owl.draw(screen)
 
     sb.show_score(pacman.score, screen)
 
