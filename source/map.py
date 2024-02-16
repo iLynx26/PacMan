@@ -1,14 +1,14 @@
 import pygame
 import globals
 from berry import Berry
-from wall import Wall
+from shrub import Shrub
 from tree import Tree
 
 class Map:
     def __init__(self, pacman, map_def: list):
         self.images = {"berry":pygame.image.load("images/berry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
-                       "wall":pygame.image.load("images/wall_blue.png"),
+                       "shrub":pygame.image.load("images/tree trunk.png"),
                        "grass":pygame.image.load("images/grass2.png"),
                        "tree":pygame.image.load("images/tree2.0.png")
                        }
@@ -16,9 +16,11 @@ class Map:
         
         for key in self.images:
             height_multiplier = 1
+            width_multiplier = 1
             if key == "tree":
-                height_multiplier = 1.4
-            self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size, globals.block_size * height_multiplier))
+                height_multiplier = 1
+                width_multiplier = 1
+            self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size * width_multiplier, globals.block_size * height_multiplier))
         self.berry_count = 0
         self.eaten_count = 0
         self.pacman = pacman
@@ -36,7 +38,7 @@ class Map:
         for row in map_def:
             for symbol in row:
                 if symbol == "#":
-                    objects.append(Wall(x, y, self.images["wall"]))
+                    objects.append(Shrub(x, y, self.images["shrub"]))
                 elif symbol == "0":
                     self.berry_count += 1
                     objects.append(Berry(x, y, False, self.images["berry"]))
@@ -94,58 +96,61 @@ class Map:
             bottom_right = [0.9,0.9]
 
         object = self.collide(x + top_left[0], y + top_left[1],)
-        if type(object) == Wall:
+        if type(object) == Shrub or type(object) == Tree:
             return True
         object = self.collide(x + top_right[0], y + top_right[1])
-        if type(object) == Wall:
+        if type(object) == Shrub or type(object) == Tree:
             return True
         object = self.collide(x + bottom_left[0], y + bottom_left[1])
-        if type(object) == Wall:
+        if type(object) == Shrub or type(object) == Tree:
             return True
         object = self.collide(x + bottom_right[0], y + bottom_right[1])
-        if type(object) == Wall:
+        if type(object) == Shrub or type(object) == Tree:
             return True
         if object is None:
             return False
-        elif type(object) == Wall:
+        elif type(object) == Shrub or type(object) == Tree:
             return True
         else:
             return False
     
-    def collide_wall_ghost(self, x, y, dir, slop):
+    def collide_wall_ghost(self, x, y, dir, slop, ignore_shrubs = False):
         top_left = [slop, slop]
         top_right = [1-slop, slop]
         bottom_left = [slop, 1-slop]
         bottom_right = [1-slop, 1-slop]
 
+        
         object = self.collide(x + top_left[0], y + top_left[1],)
-        if type(object) == Wall:
+        if (type(object) == Shrub and ignore_shrubs == False) or type(object) == Tree:
             return True
         object = self.collide(x + top_right[0], y + top_right[1])
-        if type(object) == Wall:
+
+        if (type(object) == Shrub and ignore_shrubs == False) or type(object) == Tree:
             return True
         object = self.collide(x + bottom_left[0], y + bottom_left[1])
-        if type(object) == Wall:
+        if (type(object) == Shrub and ignore_shrubs == False) or type(object) == Tree:
             return True
         object = self.collide(x + bottom_right[0], y + bottom_right[1])
-        if type(object) == Wall:
+        if (type(object) == Shrub and ignore_shrubs == False) or type(object) == Tree:
             return True
         if object is None:
             return False
-        elif type(object) == Wall:
+        elif (type(object) == Shrub and ignore_shrubs == False) or type(object) == Tree:
             return True
         else:
             return False
 
-    def get_available_directions(self, x, y, speed, slop):
+
+    def get_available_directions(self, x, y, speed, slop, ignore_shrubs = False):
         directions = []
-        if not self.collide_wall_ghost(x, y-speed, "", slop):
+        if not self.collide_wall_ghost(x, y-speed, "", slop, ignore_shrubs):
             directions.append("up")
-        if not self.collide_wall_ghost(x, y+speed, "", slop):
+        if not self.collide_wall_ghost(x, y+speed, "", slop, ignore_shrubs):
             directions.append("down")
-        if not self.collide_wall_ghost(x-speed, y, "", slop):
+        if not self.collide_wall_ghost(x-speed, y, "", slop, ignore_shrubs):
             directions.append("left")
-        if not self.collide_wall_ghost(x+speed, y, "", slop):
+        if not self.collide_wall_ghost(x+speed, y, "", slop, ignore_shrubs):
             directions.append("right")
         return directions
     

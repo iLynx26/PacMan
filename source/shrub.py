@@ -1,7 +1,7 @@
 import pygame
 import globals
 
-class Wall:
+class Shrub:
     def __init__(self, x, y, image):
         self.x = x
         self.y = y

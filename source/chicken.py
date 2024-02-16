@@ -66,7 +66,6 @@ class Chicken:
         #Make a local copy of the directions we found in the update function
         directions = self.directions.copy()
         if self.dir != None: 
-            #Don't turn around
             removable_direction = dir.get_opposite_direction(self.dir)
             if removable_direction in directions:
                 directions.remove(removable_direction)
