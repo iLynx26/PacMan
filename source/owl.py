@@ -39,7 +39,7 @@ class Owl:
         self.speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         if int(self.prev_x) != int(self.x) or int(self.prev_y) != int(self.y):
             directions = map.get_available_directions(round(self.x), round(self.y), self.speed, 0.01, True)
-            if self.directions != directions:
+            if self.directions != directions or random.randint(0, 3) == 0:
                 if self.dir not in directions:
                     # print("self.dir not in directions")
                     self.x = round(self.x)
