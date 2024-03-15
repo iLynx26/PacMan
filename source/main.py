@@ -1,4 +1,5 @@
 import pytmx
+from pytmx.util_pygame import load_pygame
 from map import Map
 from pacman import PacMan
 import pygame
@@ -7,8 +8,6 @@ from fox import Fox
 from arctic_fox import ArcticFox
 from chicken import Chicken
 from owl import Owl
-
-tiled_map = pytmx.TiledMap('tiled/level.tmx')
 
 pygame.init()
 
@@ -46,7 +45,8 @@ map_list = [
     ]
 
 pacman = PacMan(2, 1)
-map = Map(pacman, map_list)
+tiled_map = load_pygame('tiled/level.tmx')
+map = Map(pacman, map_list, tiled_map)
 map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
 arctic_fox = ArcticFox(12, 7, 1/16, 1/8)

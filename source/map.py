@@ -3,9 +3,10 @@ import globals
 from berry import Berry
 from shrub import Shrub
 from tree import Tree
+from rock_edge import RockEdge
 
 class Map:
-    def __init__(self, pacman, map_def: list):
+    def __init__(self, pacman, map_def: list, tiled_map):
         self.images = {"berry":pygame.image.load("images/berry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "shrub":pygame.image.load("images/tree trunk.png"),
@@ -24,8 +25,17 @@ class Map:
         self.berry_count = 0
         self.eaten_count = 0
         self.pacman = pacman
-
         self.parse(map_def)
+        self.load_from_tiled(tiled_map)
+
+
+    def load_from_tiled(self, tiled_map):
+        for layer in tiled_map.layers:
+            for x, y, image in layer.tiles():
+                if layer.name == "rock":
+                    self.objects.append(Tree(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
+                else:
+                    self.objects.append(RockEdge(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
 
 
     def parse(self, map_def: list):
