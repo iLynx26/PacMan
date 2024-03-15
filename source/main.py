@@ -1,3 +1,5 @@
+import pytmx
+
 from map import Map
 from pacman import PacMan
 import pygame
