@@ -32,9 +32,11 @@ class Map:
     def load_from_tiled(self, tiled_map):
         for layer in tiled_map.layers:
             for x, y, image in layer.tiles():
-                if layer.name == "rock":
+                if layer.name == "rocks":
                     self.objects.append(Tree(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
-                else:
+                elif layer.name == "bushes" or layer.name == "bush bottom":
+                    self.objects.append(Shrub(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
+                elif layer.name == "rocks no collision":
                     self.objects.append(RockEdge(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
 
 
