@@ -7,7 +7,7 @@ from rock_edge import RockEdge
 
 class Map:
     def __init__(self, pacman, map_def: list, tiled_map):
-        self.images = {"berry":pygame.image.load("images/berry.png"),
+        self.images = {"berry":pygame.image.load("images/cherry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "shrub":pygame.image.load("images/tree trunk.png"),
                        "grass":pygame.image.load("images/grass2.png"),
@@ -36,8 +36,12 @@ class Map:
                     self.objects.append(Tree(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "bushes" or layer.name == "bush bottom":
                     self.objects.append(Shrub(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
+                elif layer.name == "berry" or layer.name == "berry bottom":
+                    self.objects.append(Berry(x, y, False, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "rocks no collision":
                     self.objects.append(RockEdge(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
+                elif layer.name == "berry big":
+                    self.objects.append(Berry(x, y, True, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
 
 
     def parse(self, map_def: list):
@@ -78,9 +82,12 @@ class Map:
 
     def collide(self, x, y):
         for object in self.objects:
+            if type(object) == RockEdge:
+                continue
             if object.x == int(x) and object.y == int(y):
                 pygame.draw.circle(self.screen, (255, 255, 255), (600, 100), 5)
                 return object
+                
         return None
 
     def collide_wall(self, x, y, dir):
