@@ -44,14 +44,14 @@ map_list = [
     "                   "
     ]
 
-pacman = PacMan(2, 1)
+pacman = PacMan(2, 1, 1/15, 1/10)
 tiled_map = load_pygame('tiled/level.tmx')
 map = Map(pacman, map_list, tiled_map)
 map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
 arctic_fox = ArcticFox(12, 7, 1/16, 1/8)
 chicken = Chicken(2, 21, 1/18, 1/11)
-owl = Owl(16, 21, 1/18, 1/11)
+owl = Owl(16, 21, 1/16, 1/9)
 #player speed is 1/15
 
 while not exit:

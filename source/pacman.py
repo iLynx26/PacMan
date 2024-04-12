@@ -3,10 +3,9 @@ import globals
 from map import Map
 from berry import Berry
 import math as m
-speed = 1/15
 
 class PacMan:
-    def __init__(self, x, y):
+    def __init__(self, x, y, min_speed, max_speed):
         self.x = x
         self.y = y
         self.image = pygame.image.load("images/pacman.png")
@@ -16,6 +15,8 @@ class PacMan:
         self.direction = "right"
         self.images = {}
         self.counter = 0
+        self.min_speed = min_speed
+        self.max_speed = max_speed
 
         for direction in ["up", "down", "left", "right"]:
             self.images[direction] = []
@@ -28,6 +29,7 @@ class PacMan:
         screen.blit(self.images[self.direction][self.frame], (self.x * globals.block_size, self.y * globals.block_size))
     
     def move(self, map):
+        speed = globals.lerp_difficulty(self.min_speed, self.max_speed)
         if pygame.key.get_pressed()[pygame.K_UP] and not map.collide_wall(self.x, self.y-speed, "up"):
             self.animate("up")
             self.y -= speed

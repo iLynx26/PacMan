@@ -37,10 +37,12 @@ class Map:
                 elif layer.name == "bushes" or layer.name == "bush bottom":
                     self.objects.append(Shrub(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "berry" or layer.name == "berry bottom":
+                    self.berry_count += 1
                     self.objects.append(Berry(x, y, False, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "rocks no collision":
                     self.objects.append(RockEdge(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "berry big":
+                    self.berry_count += 1
                     self.objects.append(Berry(x, y, True, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
 
 
