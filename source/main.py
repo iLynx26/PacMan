@@ -76,6 +76,7 @@ while not exit:
     fox.draw(screen)
     arctic_fox.draw(screen)
     chicken.draw(screen)
+    map.draw_rocks(screen)
     owl.draw(screen)
 
     sb.show_score(pacman.score, screen)

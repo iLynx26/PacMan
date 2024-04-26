@@ -34,12 +34,12 @@ class Map:
             for x, y, image in layer.tiles():
                 if layer.name == "rocks":
                     self.objects.append(Tree(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
-                elif layer.name == "bushes" or layer.name == "bush bottom":
+                elif layer.name == "trees" or layer.name == "trees bottom":
                     self.objects.append(Shrub(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "berry" or layer.name == "berry bottom":
                     self.berry_count += 1
                     self.objects.append(Berry(x, y, False, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
-                elif layer.name == "rocks no collision":
+                elif layer.name == "rocks no collision" or layer.name == "trees no collision":
                     self.objects.append(RockEdge(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 elif layer.name == "berry big":
                     self.berry_count += 1
@@ -79,7 +79,16 @@ class Map:
             for y in range(self.height):
                 screen.blit(self.images["grass"], (x*globals.block_size, y*globals.block_size))            
         for object in self.objects:
-            object.draw(screen)
+            if type(object) is RockEdge:
+                continue
+            else:
+                object.draw(screen)
+        
+    
+    def draw_rocks(self, screen):      
+        for object in self.objects:
+            if type(object) is RockEdge:
+                object.draw(screen)
 
 
     def collide(self, x, y):
