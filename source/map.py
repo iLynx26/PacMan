@@ -58,6 +58,20 @@ class Map:
                     self.berry_count += 1
                     self.objects.append(Berry(x, y, True, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 
+    def pacmanisdead(self):
+        x1 = self.pacman.x
+        y1 = self.pacman.y
+        x2 = 0
+        y2 = 0
+        animals = [self.fox, self.arctic_fox, self.owl, self.chicken]
+        for animal in animals:
+            x2 = animal.x
+            y2 = animal.y
+            distance = ((x2-x1) ** 2 + (y2-y1) ** 2) ** 0.5
+            if distance < 0.5:
+                return True
+        return False
+
 
 
     def parse(self, map_def: list):

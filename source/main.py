@@ -45,6 +45,9 @@ while not exit:
     chicken.update(map)
     owl.update(map)
 
+    if map.pacmanisdead():
+        pacman.score = 0
+
     map.draw(screen)    
 
     sb.show_score(pacman.score, screen)
