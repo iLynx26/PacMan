@@ -18,40 +18,14 @@ screen = pygame.display.set_mode((width, height))
 
 exit = False
 
-map_list = [
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ", 
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   ",
-    "                   "
-    ]
-
 pacman = PacMan(2, 1, 1/15, 1/10)
 tiled_map = load_pygame('tiled/level.tmx')
-map = Map(pacman, map_list, tiled_map)
-map.screen = screen
 fox = Fox(6, 7, 1/15, 1/8)
 arctic_fox = ArcticFox(12, 7, 1/16, 1/8)
 chicken = Chicken(2, 21, 1/18, 1/11)
 owl = Owl(16, 21, 1/16, 1/9)
+map = Map(pacman, tiled_map, fox, arctic_fox, chicken, owl)
+map.screen = screen
 #player speed is 1/15
 
 while not exit:
@@ -72,12 +46,6 @@ while not exit:
     owl.update(map)
 
     map.draw(screen)    
-    pacman.draw(screen)
-    fox.draw(screen)
-    arctic_fox.draw(screen)
-    chicken.draw(screen)
-    map.draw_rocks(screen)
-    owl.draw(screen)
 
     sb.show_score(pacman.score, screen)
 

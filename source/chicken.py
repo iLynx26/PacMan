@@ -28,7 +28,7 @@ class Chicken:
             self.images[direction] = []
             for number in range(0, 3):
                 frame = image.subsurface((number * 32, y * 32, 32, 32))
-                self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size+14, globals.block_size+14)))
+                self.images[direction].append(pygame.transform.smoothscale(frame, (globals.block_size+8, globals.block_size+8)))
             y += 1
 
     def draw(self, screen):

@@ -6,7 +6,7 @@ from tree import Tree
 from rock_edge import RockEdge
 
 class Map:
-    def __init__(self, pacman, map_def: list, tiled_map):
+    def __init__(self, pacman, tiled_map, fox, arctic_fox, chicken, owl):
         self.images = {"berry":pygame.image.load("images/cherry.png"),
                        "berry_2":pygame.image.load("images/berry_2.png"),
                        "shrub":pygame.image.load("images/tree trunk.png"),
@@ -22,15 +22,28 @@ class Map:
                 height_multiplier = 1
                 width_multiplier = 1
             self.images[key] = pygame.transform.smoothscale(self.images[key], (globals.block_size * width_multiplier, globals.block_size * height_multiplier))
+        self.objects = []
         self.berry_count = 0
         self.eaten_count = 0
         self.pacman = pacman
-        self.parse(map_def)
+        self.fox = fox
+        self.chicken = chicken
+        self.arctic_fox = arctic_fox
+        self.owl = owl
         self.load_from_tiled(tiled_map)
 
 
     def load_from_tiled(self, tiled_map):
+        self.width = tiled_map.width
+        self.height = tiled_map.height
         for layer in tiled_map.layers:
+            if layer.name == "walking":
+                self.objects.append(self.pacman)
+                self.objects.append(self.fox)
+                self.objects.append(self.chicken)
+                self.objects.append(self.arctic_fox)
+            elif layer.name == "flying":
+                self.objects.append(self.owl)
             for x, y, image in layer.tiles():
                 if layer.name == "rocks":
                     self.objects.append(Tree(x, y, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
@@ -44,6 +57,7 @@ class Map:
                 elif layer.name == "berry big":
                     self.berry_count += 1
                     self.objects.append(Berry(x, y, True, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
+                
 
 
     def parse(self, map_def: list):
@@ -79,10 +93,7 @@ class Map:
             for y in range(self.height):
                 screen.blit(self.images["grass"], (x*globals.block_size, y*globals.block_size))            
         for object in self.objects:
-            if type(object) is RockEdge:
-                continue
-            else:
-                object.draw(screen)
+            object.draw(screen)
         
     
     def draw_rocks(self, screen):      
