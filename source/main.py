@@ -27,8 +27,9 @@ owl = Owl(16, 21, 1/16, 1/9)
 map = Map(pacman, tiled_map, fox, arctic_fox, chicken, owl)
 map.screen = screen
 #player speed is 1/15
+gameover = False
 
-while not exit:
+while not exit and not gameover:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit = True
@@ -46,7 +47,20 @@ while not exit:
     owl.update(map)
 
     if map.pacmanisdead():
-        pacman.score = 0
+        if pacman.lives != 1:
+            pacman.score = 0
+        pacman.lives -= 1
+        if pacman.lives == 0:
+            gameover = True
+    
+    if pacman.score == 15100:
+        gameover = True
+
+    if pygame.key.get_pressed()[pygame.K_F10]:
+        gameover = True
+    if pygame.key.get_pressed()[pygame.K_F11]:
+        gameover = True
+        pacman.score = 15100
 
     map.draw(screen)    
 
@@ -55,3 +69,33 @@ while not exit:
     pygame.display.flip()
 
     map.calculate_difficulty()
+
+while not exit:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            exit = True
+    
+    clock.tick(30)
+    if pacman.score != 15100:
+        font = pygame.font.Font("images/Pixel_Bubbles.ttf", 42)
+        text = font.render(f"You esaped the forest!", True, (212, 212, 20))
+        text_rect = text.get_rect()
+        text_rect.topleft = 10, 180
+        screen.blit(text, text_rect)
+        text = font.render(f"You had {pacman.score} points.", True, (212, 212, 20))
+        text_rect = text.get_rect()
+        text_rect.topleft = 10, 230
+        screen.blit(text, text_rect)
+    else:
+        font = pygame.font.Font("images/Pixel_Bubbles.ttf", 40)
+        text = font.render(f"You got enough berries", True, (212, 212, 20))
+        text_rect = text.get_rect()
+        text_rect.topleft = 10, 180
+        screen.blit(text, text_rect)
+        text = font.render(f"to feed your family! YAY!", True, (212, 212, 20))
+        text_rect = text.get_rect()
+        text_rect.topleft = 10, 230
+        screen.blit(text, text_rect)
+    
+    pygame.display.flip()
+

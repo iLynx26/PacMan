@@ -30,6 +30,7 @@ class Map:
         self.chicken = chicken
         self.arctic_fox = arctic_fox
         self.owl = owl
+        self.lastdeathtime = 0
         self.load_from_tiled(tiled_map)
 
 
@@ -59,6 +60,9 @@ class Map:
                     self.objects.append(Berry(x, y, True, pygame.transform.smoothscale(image, (globals.block_size, globals.block_size))))
                 
     def pacmanisdead(self):
+        current_time = pygame.time.get_ticks()
+        if current_time < self.lastdeathtime + 3000:
+            return False
         x1 = self.pacman.x
         y1 = self.pacman.y
         x2 = 0
@@ -69,6 +73,7 @@ class Map:
             y2 = animal.y
             distance = ((x2-x1) ** 2 + (y2-y1) ** 2) ** 0.5
             if distance < 0.5:
+                self.lastdeathtime = current_time
                 return True
         return False
 
@@ -217,3 +222,4 @@ class Map:
     
     def eat_berries_cheat(self):
         self.eaten_count += 20
+    

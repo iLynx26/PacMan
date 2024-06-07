@@ -17,6 +17,7 @@ class PacMan:
         self.counter = 0
         self.min_speed = min_speed
         self.max_speed = max_speed
+        self.lives = 3
 
         for direction in ["up", "down", "left", "right"]:
             self.images[direction] = []
@@ -44,6 +45,7 @@ class PacMan:
             self.x += speed
         if pygame.key.get_pressed()[pygame.K_F9]:
             map.eat_berries_cheat()
+            
         object = map.collide(self.x + 0.5, self.y + 0.5)
 
         if type(object) == Berry:
